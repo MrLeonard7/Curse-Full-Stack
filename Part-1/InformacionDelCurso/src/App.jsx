@@ -34,7 +34,7 @@ const Total = ({course}) => {
     <div>
       <p>Total number of exercises {
         course.parts.reduce((sum, part) => sum + part.exercises, 0)
-        } </p>
+        } </p> 1
     </div>
   )
 }
