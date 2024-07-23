@@ -8,6 +8,21 @@ const Button = (props) => (
   </button>
 )
 
+const Statistics = (props) => {
+  return (
+    <div>
+     <h2>Statistics</h2>
+     <Display value={'Good ' + props.good} />
+     <Display value={'Neutral ' + props.neutral} />
+     <Display value={'Bad ' + props.bad} />
+     <Display value={'All ' + props.totalFeedback}  />
+     <Display value={'Average ' + props.average} />
+     <Display value={'Positive ' + props.positivePercentage + "%"} />
+
+    </div>
+  )
+}
+
 const App = () => {
   // guarda los clics de cada botón en su propio estado
   const [good, setGood] = useState(0)
@@ -35,8 +50,8 @@ const App = () => {
   }
 
   const totalFeedback = good + neutral + bad
-  const average = (good - bad)/totalFeedback
-  const positivePercentage = (good / totalFeedback) * 100
+  const average = totalFeedback === 0 ? 0 : (good-bad)/totalFeedback
+  const positivePercentage = totalFeedback === 0 ? 0 : (good / totalFeedback) * 100;
 
   return (
     <div>
@@ -45,13 +60,7 @@ const App = () => {
      <Button qualification={setNeutralFeedback} text='Neutral'/>
      <Button qualification={setBadFeedback} text='Bad'/>
 
-     <h2>Statistics</h2>
-     <Display value={'Good ' + good} />
-     <Display value={'Neutral ' + neutral} />
-     <Display value={'Bad ' + bad} />
-     <Display value={'All ' + totalFeedback}  />
-     <Display value={'Average ' + average} />
-     <Display value={'Positive ' + positivePercentage + "%"} />
+     <Statistics good={good} neutral={neutral} bad={bad} totalFeedback={totalFeedback} average={average} positivePercentage={positivePercentage} />
 
     </div>
   )
