@@ -1,5 +1,7 @@
 import { useState } from 'react'
 
+const Display = props => <div> {props.value}  </div>
+
 const Button = (props) => (
   <button onClick={props.qualification} >
     {props.text}
@@ -32,18 +34,25 @@ const App = () => {
 
   }
 
+  const totalFeedback = good + neutral + bad
+  const average = (good - bad)/totalFeedback
+  const positivePercentage = (good / totalFeedback) * 100
 
   return (
     <div>
      <h1>Give Feedback</h1>
      <Button qualification={setGoodFeedback} text='Good' />
      <Button qualification={setNeutralFeedback} text='Neutral'/>
-      <Button qualification={setBadFeedback} text='Bad'/>
+     <Button qualification={setBadFeedback} text='Bad'/>
 
      <h2>Statistics</h2>
-     <p>Good {good} </p>
-     <p>Neutral {neutral} </p>
-     <p>Bad {bad} </p>
+     <Display value={'Good ' + good} />
+     <Display value={'Neutral ' + neutral} />
+     <Display value={'Bad ' + bad} />
+     <Display value={'All ' + totalFeedback}  />
+     <Display value={'Average ' + average} />
+     <Display value={'Positive ' + positivePercentage + "%"} />
+
     </div>
   )
 }
