@@ -32,11 +32,11 @@ const Content = ({ course }) => {
 
 const Total = ({course}) => {
   return (
-    <div>
+    <>
       <strong>Total of {
         course.parts.reduce((s, p) => s + p.exercises, 0)} exercises  
       </strong> 
-    </div>
+    </>
   )
 }
 
