@@ -48,6 +48,9 @@ const App = () => {
           name: <input value={newName} onChange={handleNameChange} required/>
         </div>
         <div>
+          number: <input />
+          </div>
+        <div>
           <button type="submit">add</button>
         </div>
       </form>
