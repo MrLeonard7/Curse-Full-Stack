@@ -15,14 +15,29 @@ const App = () => {
 
   const addName = (event) => {
     event.preventDefault()
-    const nameObject = {
-      name: newName,
+    const trimmedNewName = newName.trim()
+    const formattedNewName =  trimmedNewName.split(' ')
+                                    .filter(word => word !== '')
+                                    .join(' ');
+    const arrayNames = persons.map(person => person.name)
+    console.log(arrayNames, formattedNewName);
+    if (arrayNames.includes(formattedNewName)) {
+      alert(`${formattedNewName} is alredy added to phonebook`)
+
+    } else if (formattedNewName === '') {
+      alert(`Name cannot be empty`)
+
     }
-    setPersons(persons.concat(nameObject))
+     else {
+      const nameObject = {
+        name: formattedNewName,
+      }
+      setPersons(persons.concat(nameObject))
+    }
     setNewName('')
 
   } 
-  console.log(persons);
+  //console.log(persons);
 
 
   return (
@@ -30,7 +45,7 @@ const App = () => {
       <h2>Phonebook</h2>
       <form onSubmit={addName} >
         <div>
-          name: <input value={newName} onChange={handleNameChange} />
+          name: <input value={newName} onChange={handleNameChange} required/>
         </div>
         <div>
           <button type="submit">add</button>
