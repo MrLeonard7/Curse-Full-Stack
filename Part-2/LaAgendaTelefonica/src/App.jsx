@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
+import './Styles/App.css'
 
 
 const Persons = (props) => {
@@ -66,7 +67,7 @@ const App = () => {
 
   useEffect(() =>{
     axios
-    .get('http://localhost:3001/persons')
+    .get('http://localhost:3000/persons')
     .then(response => {
       setPersons(response.data)
     })
