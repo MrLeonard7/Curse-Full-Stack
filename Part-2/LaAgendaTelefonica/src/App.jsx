@@ -1,62 +1,9 @@
-import axios from 'axios'
 import { useEffect, useState } from 'react'
+import personService from './Services/persons'
 import './Styles/App.css'
-
-
-const Persons = (props) => {
-  return (
-    <>
-      {props.results.map(person => 
-      <p key={person.name} > {person.name} {person.number}  </p>)}
-    </>
-  )
-}  
- 
-
-
-const Filter = (props) => {
-  return (
-    <>
-      filter show with: 
-      <input 
-      type='text' 
-      onChange={props.searcher} 
-      placeholder='Filter' 
-      value={props.search}
-        />
-
-    </>
-  )
-}
-
-
-const PersonForm = (props) => {
-  return (
-    <>  
-      <form onSubmit={props.addPerson} >
-        <div>
-          name:
-           <input
-            value={props.newName}
-             onChange={props.handleNameChange}
-              required/>
-        </div>
-        <div>
-          number:
-           <input value={props.newNumber}
-            onChange={props.handleNumberChange}
-             required/>
-
-          </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
-
-    
-    </>
-  )
-}
+import { Persons } from './Components/Persons'
+import { Filter } from './Components/Filter'
+import { PersonForm } from './Components/PersonForm'
 
 
 const App = () => {
@@ -66,12 +13,11 @@ const App = () => {
   const [search, setSearch] = useState('')
 
   useEffect(() =>{
-    axios
-    .get('http://localhost:3000/persons')
-    .then(response => {
-      setPersons(response.data)
+    personService.getAll().then(initialPersons => {
+      setPersons(initialPersons)
     })
-  })
+    
+  }, [])
 
   const handleNameChange = (event) => {
     console.log(event.target.value)
@@ -101,11 +47,16 @@ const App = () => {
 
     }
      else {
-      const nameObject = {
+      const personObject = {
         name: formattedNewName,
         number: numberToAdd
       }
-      setPersons(persons.concat(nameObject))
+
+      personService.create(personObject)
+      .then(returnedPerson => {
+        setPersons(persons.concat(returnedPerson))
+      })
+
     }
     setNewName('')
     setNewNumber('')
