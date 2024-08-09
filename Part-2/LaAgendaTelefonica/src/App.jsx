@@ -1,8 +1,46 @@
 import { useState } from 'react'
 
 
-const Persons = (props) => <p> {props.name} {props.number} </p> 
+const Persons = (props) => {
+  return (
+    <>
+      {props.results.map(person => 
+      <p key={person.name} > {person.name} {person.number}  </p>)}
+    </>
+  )
+}  
+ 
 
+
+const Filter = (props) => {
+  return (
+    <>
+      filter show with: <input type='text' onChange={props.searcher} placeholder='Filter' value={props.search}  />
+
+    </>
+  )
+}
+
+
+const PersonForm = (props) => {
+  return (
+    <>  
+      <form onSubmit={props.addPerson} >
+        <div>
+          name: <input value={props.newName} onChange={props.handleNameChange} required/>
+        </div>
+        <div>
+          number: <input value={props.newNumber} onChange={props.handleNumberChange} required/>
+          </div>
+        <div>
+          <button type="submit">add</button>
+        </div>
+      </form>
+
+    
+    </>
+  )
+}
 
 
 const App = () => {
@@ -14,7 +52,7 @@ const App = () => {
   ])  
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
-  const [search, setShearch] = useState('')
+  const [search, setSearch] = useState('')
 
   const handleNameChange = (event) => {
     console.log(event.target.value)
@@ -57,7 +95,7 @@ const App = () => {
   //console.log(persons);
 
   const searcher = (e) => {
-    setShearch(e.target.value)
+    setSearch(e.target.value)
     console.log(e.target.value)
     
   }
@@ -73,27 +111,23 @@ const App = () => {
 
 
   return (
-    <div>
+    <div className='App' >
       <h2>Phonebook</h2>
-      <div>
-        filter show with: <input type='text' onChange={searcher} placeholder='Filter' value={search}  />
-      </div>
-      <h2>Add a new</h2>
-      <form onSubmit={addPerson} >
-        <div>
-          name: <input value={newName} onChange={handleNameChange} required/>
-        </div>
-        <div>
-          number: <input value={newNumber} onChange={handleNumberChange} required/>
-          </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
-      <h2>Numbers</h2>
-      <div>
-        {results.map(person => <Persons key={person.name} name={person.name} number={person.number} />)}
-      </div>
+
+      <Filter search={search} searcher={searcher} />
+
+      <h3>Add a new</h3>
+
+      <PersonForm
+        addPerson={addPerson}
+        newName={newName} handleNameChange={handleNameChange}
+        newNumber={newNumber} handleNumberChange={handleNumberChange}
+      />
+
+      <h3>Numbers</h3>
+      
+      <Persons results={results} />
+
     </div>
   )
 }
