@@ -31,7 +31,8 @@ const App = () => {
   const addPerson = (event) => {
     event.preventDefault()
     const trimmedNewName = newName.trim()
-    const formattedNewName =  trimmedNewName.split(' ')
+    const formattedNewName =  trimmedNewName
+                                    .split(' ')
                                     .filter(word => word !== '')
                                     .join(' ');
 
