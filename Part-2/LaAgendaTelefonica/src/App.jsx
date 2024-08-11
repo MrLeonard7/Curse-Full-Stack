@@ -13,7 +13,7 @@ const App = () => {
   const [search, setSearch] = useState('')
 
   useEffect(() =>{
-    personService.getAll().then(initialPersons => {
+    personService.getAll().then(initialPersons => {+
       setPersons(initialPersons)
     })
     
@@ -39,7 +39,6 @@ const App = () => {
     const numberToAdd = newNumber
 
     const arrayNames = persons.map(person => person.name)
-    console.log(arrayNames, formattedNewName);
     if (arrayNames.includes(formattedNewName)) {
       alert(`${formattedNewName} is alredy added to phonebook`)
 
@@ -79,6 +78,11 @@ const App = () => {
       person.name.toLowerCase().includes(search.toLowerCase())
     ))
   }
+  const handleDeletePerson = (id, name) => {
+    window.confirm(`Delete ${name}`) ? personService.eliminate(id)
+    : alert(`${name} has not been eliminated`)
+    window.location.reload(true)
+  }
 
 
   return (
@@ -97,7 +101,7 @@ const App = () => {
 
       <h3>Numbers</h3>
       
-      <Persons results={results} />
+      <Persons results={results} handleDeletePerson={handleDeletePerson} />
 
     </div>
   )
