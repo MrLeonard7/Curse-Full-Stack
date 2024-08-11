@@ -6,11 +6,26 @@ import { Filter } from './Components/Filter'
 import { PersonForm } from './Components/PersonForm'
 
 
+const Notification = ({ message, classNotification }) => {
+  if (message == null) {
+    return null
+    
+  }
+
+  return (
+    <div className={classNotification} >
+      { message }
+    </div>
+  )
+}
+
 const App = () => {
   const [persons, setPersons] = useState([])  
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [search, setSearch] = useState('')
+  const [notification, setNotification] = useState(null)
+  const [error, setError] = useState(null)
 
   useEffect(() =>{
     personService.getAll().then(initialPersons => {+
@@ -50,11 +65,27 @@ const App = () => {
       }
     
     if (arrayNames.includes(formattedNewName.toLowerCase())) {
-      window.confirm(`${formattedNewName} is already added to phonebook ,replace the old number with a new one?`)
+      window.confirm(
+        `${formattedNewName} is already added to phonebook ,replace the old number with a new one?`)
         ? personService.update(personToModify.id,personObject)
-        .then(response => alert(`${response.name}'s number was modified to ${response.number}`)) :
-        alert(`${formattedNewName}'s number was not modified`)
-      window.location.reload(true)
+        .then(response => {
+          setNotification(
+            `${response.name}'s number was modified to ${response.number}`)
+          setTimeout(() => {
+            setNotification(null)
+          }, 5000)
+          }).catch(() => {
+            setError(
+                  `Information of ${personObject.name} has already been removed from server`)
+                setTimeout(() => {
+                  setError(null)
+                }, 5000)
+    })
+          :setNotification(
+          `${formattedNewName}'s number was not modified`)
+          setTimeout(() => {
+            setNotification(null)
+          }, 5000)
     } else if (formattedNewName === '') {
       alert(`Name cannot be empty`)
 
@@ -64,6 +95,10 @@ const App = () => {
       personService.create(personObject)
       .then(returnedPerson => {
         setPersons(persons.concat(returnedPerson))
+        setNotification(`${personObject.name} was added`)
+        setTimeout(() => {
+          setNotification(null)
+        }, 5000)
       })
 
     }
@@ -89,14 +124,31 @@ const App = () => {
   }
   const handleDeletePerson = (id, name) => {
     window.confirm(`Delete ${name}`) ? personService.eliminate(id)
-    : alert(`${name} has not been eliminated`)
-    window.location.reload(true)
+    .then(() => {
+      setError(`${name} has been eliminated`)
+      setTimeout(() => {
+      setError(null)
+      
+      window.location.reload(true)
+    }, 5000)
+    }
+    )
+    : setNotification(`${name} has not been eliminated`)
+    setTimeout(() => {
+      setNotification(null)
+    }, 5000)
+
   }
 
 
   return (
     <div className='App' >
       <h2>Phonebook</h2>
+
+      {notification && 
+      <Notification message={notification} classNotification={'notification'} />}
+      {error && 
+      <Notification message={error} classNotification={'error'} />}
 
       <Filter search={search} searcher={searcher} />
 
