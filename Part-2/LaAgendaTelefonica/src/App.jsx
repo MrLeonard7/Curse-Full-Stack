@@ -79,6 +79,7 @@ const App = () => {
                   `Information of ${personObject.name} has already been removed from server`)
                 setTimeout(() => {
                   setError(null)
+                  window.location.reload(true)
                 }, 5000)
     })
           :setNotification(
@@ -128,7 +129,6 @@ const App = () => {
       setError(`${name} has been eliminated`)
       setTimeout(() => {
       setError(null)
-      
       window.location.reload(true)
     }, 5000)
     }
