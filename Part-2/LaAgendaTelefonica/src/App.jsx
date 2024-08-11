@@ -41,8 +41,8 @@ const App = () => {
     const arrayNames = persons.map(person => person.name.toLowerCase())
     console.log(arrayNames);
     
-    const objectPerson = persons.find(person => person.name.toLowerCase() === formattedNewName.toLowerCase())
-    console.log(objectPerson)
+    const personToModify = persons.find(person => person.name.toLowerCase() === formattedNewName.toLowerCase())
+    console.log(personToModify)
 
     const personObject = {
         name: formattedNewName,
@@ -51,7 +51,7 @@ const App = () => {
     
     if (arrayNames.includes(formattedNewName.toLowerCase())) {
       window.confirm(`${formattedNewName} is already added to phonebook ,replace the old number with a new one?`)
-        ? personService.update(objectPerson.id,personObject)
+        ? personService.update(personToModify.id,personObject)
         .then(response => alert(`${response.name}'s number was modified to ${response.number}`)) :
         alert(`${formattedNewName}'s number was not modified`)
       window.location.reload(true)
