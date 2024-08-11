@@ -38,19 +38,28 @@ const App = () => {
 
     const numberToAdd = newNumber
 
-    const arrayNames = persons.map(person => person.name)
-    if (arrayNames.includes(formattedNewName)) {
-      alert(`${formattedNewName} is alredy added to phonebook`)
+    const arrayNames = persons.map(person => person.name.toLowerCase())
+    console.log(arrayNames);
+    
+    const objectPerson = persons.find(person => person.name.toLowerCase() === formattedNewName.toLowerCase())
+    console.log(objectPerson)
 
+    const personObject = {
+        name: formattedNewName,
+        number: numberToAdd
+      }
+    
+    if (arrayNames.includes(formattedNewName.toLowerCase())) {
+      window.confirm(`${formattedNewName} is already added to phonebook ,replace the old number with a new one?`)
+        ? personService.update(objectPerson.id,personObject)
+        .then(response => alert(`${response.name}'s number was modified to ${response.number}`)) :
+        alert(`${formattedNewName}'s number was not modified`)
+      window.location.reload(true)
     } else if (formattedNewName === '') {
       alert(`Name cannot be empty`)
 
     }
-     else {
-      const personObject = {
-        name: formattedNewName,
-        number: numberToAdd
-      }
+     else {     
 
       personService.create(personObject)
       .then(returnedPerson => {
