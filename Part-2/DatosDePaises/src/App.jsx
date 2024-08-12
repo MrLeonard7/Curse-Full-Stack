@@ -1,6 +1,44 @@
 import { useEffect, useState } from "react"
 import countriesService from "./Services/countries"
 
+const Country = ({results, language}) => {
+  return(
+    <div>
+      <h2> {results[0].name.common} </h2>
+      <p><strong>Capital:</strong> {results[0].capital[0]}</p>
+      <p><strong>Area:</strong> {results[0].area} </p>
+      <h3>Languages:</h3>
+      <ul>
+        {language[0].map(lang => <li key={lang} > {lang} </li> )}
+      </ul>
+      <img src={results.map(l => l.flags.svg)} alt="flag" width={200} />
+    </div>
+
+  )
+}
+
+const NameCountry = ( { results, handleShow } ) => {
+  return(
+    <>
+      {results.map((country, index) => (
+      <div key={index}>
+        <> {country.name.common} </>
+          <button onClick={() => handleShow(country.name.common)} >Show</button>
+      </div>))
+}
+    </>
+  )
+}
+
+const FindCountries = ( {name, handleChangeName} ) => {
+  return(
+    <div>
+      <label> {`find countries `} </label>
+      <input type="text" value={name} onChange={handleChangeName} />
+    </div>
+  )
+}
+
 
 function App() {
   const [countries, setCountries] = useState([])
@@ -38,30 +76,22 @@ function App() {
     console.log(results.map(l => l.flags.svg));
     
   }
-  
+
+  const handleShow = (nameCountry) => {
+    setName(nameCountry)    
+  }
+
 
   
   return (
     <>
       <h1>COUNTRIES</h1>
-      <div>
-        <label>find countries</label>
-        <input type="text" value={name} onChange={handleChangeName} />
-      </div>
+      <FindCountries name={name} handleChangeName={handleChangeName} />
       <div>
         {results.length === 1 ?
-           <div>
-            <h2> {results[0].name.common} </h2>
-            <p><strong>Capital:</strong> {results[0].capital[0]}</p>
-            <p><strong>Area:</strong> {results[0].area} </p>
-            <h3>Languages:</h3>
-            <ul>
-              {language[0].map(lang => <li key={lang} > {lang} </li> )}
-            </ul>
-            <img src={results.map(l => l.flags.svg)} alt="flag" width={200} />
-           </div>
-         :results.map((country, index) =>
-           <p key={index} > {country.name.common} </p> ) }
+          <Country results={results} language={language} />
+         : <NameCountry results={results} handleShow={handleShow} />
+        }
       </div>
     </>
   )
