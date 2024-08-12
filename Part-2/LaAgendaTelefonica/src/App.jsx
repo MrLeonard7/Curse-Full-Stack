@@ -76,14 +76,14 @@ const App = () => {
           }, 5000)
           }).catch(() => {
             setError(
-                  `Information of ${personObject.name} has already been removed from server`)
-                setTimeout(() => {
-                  setError(null)
-                  window.location.reload(true)
-                }, 5000)
-    })
+                `Information of ${personObject.name} has already been removed from server`)
+            setTimeout(() => {
+                setError(null)
+                window.location.reload(true)
+            }, 5000)
+          })
           :setNotification(
-          `${formattedNewName}'s number was not modified`)
+            `${formattedNewName}'s number was not modified`)
           setTimeout(() => {
             setNotification(null)
           }, 5000)
