@@ -2,7 +2,6 @@ import { useEffect, useState } from "react"
 import countriesService from "./Services/countries"
 
 const Country = ({results, language, weatherCountry}) => {  
-  
 
   return(
     <div>
@@ -15,9 +14,10 @@ const Country = ({results, language, weatherCountry}) => {
       </ul>
       <img src={results.map(l => l.flags.svg)} alt="flag" width={200} />
       <h3>Wheather in {results.map(res => res.capital)}  </h3>
-      {weatherCountry && <p>temperature {weatherCountry.main.temp} Celcius </p>}
-      <img src={'https://openweathermap.org/img/wn/02d@2x.png'} alt="img" />
-      {weatherCountry && <p> wind {weatherCountry.wind.speed}m/s </p>}
+      <p>temperature {weatherCountry.temperature} Celcius </p>
+      <img src={`https://openweathermap.org/img/wn/${weatherCountry.iconWeather}@2x.png`} alt="img" />
+      <p> wind {weatherCountry.speedWind}m/s </p>
+
 
       
     </div>
@@ -51,7 +51,7 @@ const FindCountries = ( {name, handleChangeName} ) => {
 function App() {
   const [countries, setCountries] = useState([])
   const [name, setName] = useState('')
-  const [weatherCountry , setWeatherCountry] = useState(null)
+  const [weatherCountry , setWeatherCountry] = useState([])
 
   const handleChangeName = (e) => {
     setName(e.target.value)
@@ -81,21 +81,28 @@ function App() {
   let language = []
   let lat
   let lon
-
   if (results.length === 1) {
     language = results.map(r => Object.values(r.languages)) 
     console.log(results);
 
     lat = results.map(res => res.latlng[0])
     lon = results.map(res => res.latlng[1])
-    console.log(lat, lon);
+    
     
     
     countriesService.getWeather(lat, lon)
       .then(res => {
-      setWeatherCountry([res])
-      console.log(res)})
+        console.log(res);
+        
+      setWeatherCountry({
+        temperature : res.main.temp,
+        speedWind: res.wind.speed,
+        iconWeather: res.weather[0].icon 
+      })
+      console.log(weatherCountry)})
     
+      
+      
 
     
   }
@@ -112,7 +119,7 @@ function App() {
       <FindCountries name={name} handleChangeName={handleChangeName} />
       <div>
         {results.length === 1 ?
-          <Country results={results} language={language} weatherCountry={weatherCountry}/>
+          <Country results={results} language={language} weatherCountry={weatherCountry} />
          : <NameCountry results={results} handleShow={handleShow} />
         }
       </div>

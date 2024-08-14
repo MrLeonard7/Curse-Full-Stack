@@ -12,7 +12,10 @@ const getAll = () => {
 };
 
 const getWeather = (lat, lon) => {
-    const request = axios.get(baseUrl_ApiWeather+`/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${api_key}`);
+    const request = axios.get(
+      baseUrl_ApiWeather +
+        `/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${api_key}&units=metric`
+    );
     return request.then(response => response.data)
 }
 
