@@ -11,10 +11,10 @@ const getAll = () => {
   return request.then((response) => response.data);
 };
 
-const getWeather = (lat, lon) => {
+const getWeather = (nameCapital) => {
     const request = axios.get(
       baseUrl_ApiWeather +
-        `/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${api_key}&units=metric`
+        `/data/2.5/weather?q=${nameCapital}&APPID=${api_key}&units=metric`
     );
     return request.then(response => response.data)
 }

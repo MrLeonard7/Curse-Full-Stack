@@ -79,18 +79,15 @@ function App() {
 
   //console.log(results.map(r => Object.values(r.languages)))
   let language = []
-  let lat
-  let lon
+  let nameCapital
+
   if (results.length === 1) {
     language = results.map(r => Object.values(r.languages)) 
-    console.log(results);
-
-    lat = results.map(res => res.latlng[0])
-    lon = results.map(res => res.latlng[1])
+    console.log(results);    
     
+    nameCapital = results.map(res => res.capital)
     
-    
-    countriesService.getWeather(lat, lon)
+    countriesService.getWeather(nameCapital)
       .then(res => {
         console.log(res);
         
