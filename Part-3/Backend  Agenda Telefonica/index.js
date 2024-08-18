@@ -30,10 +30,27 @@ app.get("/api/persons", (req, res) => {
   res.json(persons);
 });
 
+app.get("/api/persons/:id", (req, res) => {
+    const id = Number(req.params.id)
+    const person = persons.find((person => person.id === id))
 
+    if (person) {
+        res.json(person)
+    } else {
+        res.status(204).end()
+    }
+})
+
+app.delete("/api/persons/:id", (req, res) => {
+    const id = Number(req.params.id)
+    persons = persons.filter((person) => person.id !== id)
+
+    res.status(204).end()
+
+})
 
 app.get("/info/", (req, res) => {
-    let now = new Date();
+    const now = new Date();
   res.send(`
     <p> Phonebook has info for ${persons.length} people </p>
     <p> ${now} </p>
@@ -42,7 +59,6 @@ app.get("/info/", (req, res) => {
 });
 
 const PORT = 3001
-
 app.listen(PORT, () => {
     console.log(`Server runnig on port ${PORT}`);
     
