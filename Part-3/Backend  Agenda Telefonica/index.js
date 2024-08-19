@@ -49,14 +49,45 @@ app.delete("/api/persons/:id", (req, res) => {
 
 })
 
-app.get("/info/", (req, res) => {
-    const now = new Date();
+app.post("/api/persons", (req, res) => {
+  const body = req.body;
+  console.log(req.context);
+  const nameBody = req.body.name.toLowerCase() 
+  const namesPersons = persons.map(person => person.name.toLowerCase())
+  console.log(nameBody, namesPersons);
+
+
+  if (!body.name || !body.number) {
+    return res.status(400).json({ error: "name must be unique" });
+  }
+
+  if(namesPersons.includes(nameBody)) {
+    return res.status(400).json({ error: "name must be unique" });
+
+  }  
+
+
+
+  const person = {
+    id: Math.random() * 1000,
+    name: body.name,
+    number: body.number,
+  };
+
+  persons = persons.concat(person);
+
+  res.json(person);
+});
+
+app.get("/info", (req, res) => {
+  const now = new Date();
   res.send(`
     <p> Phonebook has info for ${persons.length} people </p>
     <p> ${now} </p>
     `);
     
 });
+
 
 const PORT = 3001
 app.listen(PORT, () => {
