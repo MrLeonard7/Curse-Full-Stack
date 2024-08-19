@@ -22,8 +22,14 @@ let notes = [
   },
 ];
 
-app.use(morgan('tiny'));
+morgan.token("body", function (req, res) {
+  return JSON.stringify(req.body);
+});
 
+
+
+app.use(morgan('tiny'))
+app.use(morgan(':body'))
 
 app.get("/", (request, response) => {
   response.send("<h1>Hello World!</h1>");
