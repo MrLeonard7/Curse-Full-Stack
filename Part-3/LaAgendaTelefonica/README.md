@@ -9,4 +9,4 @@ Currently, two official plugins are available:
 
 repo Backend: https://render-backend-agenda-telefonica.onrender.com
 
-link app: https://render-backend-agenda-telefonica.onrender.com
+link app: https://hrender-backend-agenda-telefonica.onrender.com
